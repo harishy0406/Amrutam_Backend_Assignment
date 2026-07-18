@@ -1,0 +1,26 @@
+fastapi[all]
+uvicorn[standard]
+sqlalchemy
+asyncpg
+pydantic-settings
+alembic
+python-multipart
+# Security
+bcrypt==4.0.1
+passlib[bcrypt]
+python-jose[cryptography]
+# Database & Redis
+redis
+# Http Tools (needed for tests later)
+httpx
+requests
+# Linter (optional but good)
+ruff
+apscheduler==3.10.4
+cryptography
+python-json-logger 
+prometheus-fastapi-instrumentator
+pytest 
+pytest-asyncio 
+httpx
+fastapi_limiter
