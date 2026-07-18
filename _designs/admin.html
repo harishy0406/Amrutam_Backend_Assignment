@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Amrutam | Admin Analytics Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .chart-gradient-revenue {
+            background: linear-gradient(180deg, rgba(63, 77, 43, 0.1) 0%, rgba(63, 77, 43, 0) 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D8C7A0;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#d7dcc9",
+                        "primary-fixed-dim": "#bbce8f",
+                        "surface-tint": "#546431",
+                        "outline": "#76786b",
+                        "on-secondary-fixed-variant": "#59440d",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#45483d",
+                        "surface-container-highest": "#e0e5d1",
+                        "surface-variant": "#e0e5d1",
+                        "on-tertiary-fixed-variant": "#3b4d12",
+                        "primary-fixed": "#d6eaa9",
+                        "error": "#D9534F",
+                        "forest-olive": "#3F4D2B",
+                        "on-tertiary-fixed": "#141f00",
+                        "on-secondary-fixed": "#251a00",
+                        "error-container": "#ffdad6",
+                        "sand": "#D8C7A0",
+                        "on-background": "#181d11",
+                        "background": "#f7fce8",
+                        "surface-container": "#ebf0dd",
+                        "warning": "#E8B44B",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c6c8b9",
+                        "on-primary-container": "#ddf1b0",
+                        "on-surface": "#181d11",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#d4eca0",
+                        "tertiary": "#45571c",
+                        "inverse-primary": "#bbce8f",
+                        "on-primary-fixed-variant": "#3c4c1b",
+                        "secondary-container": "#fcdc97",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#775f27",
+                        "secondary-fixed-dim": "#e2c380",
+                        "surface-container-low": "#f1f6e2",
+                        "primary": "#465624",
+                        "inverse-on-surface": "#eef3df",
+                        "info": "#5A8FBF",
+                        "off-white": "#FFFDF8",
+                        "tertiary-container": "#5c7032",
+                        "warm-cream": "#F8F4EC",
+                        "surface": "#f7fce8",
+                        "earth-brown": "#8B6A43",
+                        "surface-bright": "#f7fce8",
+                        "secondary-fixed": "#ffdf9a",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e6ead7",
+                        "soft-beige": "#F3EEDF",
+                        "on-tertiary-container": "#dbf3a6",
+                        "inverse-surface": "#2d3225",
+                        "primary-container": "#5e6f3a",
+                        "on-primary-fixed": "#141f00",
+                        "secondary": "#725b23",
+                        "tertiary-fixed-dim": "#b8cf86",
+                        "surface-container-lowest": "#ffffff",
+                        "success": "#4CAF50"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "body-md": ["Work Sans"],
+                        "body-lg": ["Work Sans"],
+                        "label-md": ["JetBrains Mono"],
+                        "title-lg": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-warm-cream font-body-md text-on-surface antialiased min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-surface shadow-[0_4px_20px_rgba(63,77,43,0.08)] sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-12">
+<span class="text-title-lg font-headline-lg text-forest-olive tracking-tight cursor-pointer">Amrutam</span>
+<div class="hidden md:flex gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Find Doctor</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Consultations</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Prescriptions</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-soft-beige/50 rounded-full px-4 py-2 border border-sand/30">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-48" placeholder="Search data points..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all active:scale-95">settings</button>
+<div class="h-10 w-10 rounded-full border-2 border-sand overflow-hidden cursor-pointer active:scale-95 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A professional medical administrator profile portrait, clean studio lighting, wearing soft earthy toned professional attire, minimalist clinical background with a touch of botanical greenery, high resolution photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDACQm8AAlzccOEMvYTwxpil8OGgzbfjnEVGFXh0Fy8H0cKgMO2tfi3ZAKk2LxuWOGo8AXj2G63zB-rNhk8xPc4DEZHuILPPWO65C2rQ6JFItX2jf3fDaNeev_E30jlN8F16tcinVuphDCF71II1TCxlgoI59BBcZp1L4aFvu-f7_3Hro_GAD3iBu2dMmO4-c56Z0dXt2NzAqBV6n1_RSSAu2bXxF8_sQlPrDGojcqpcnZ34TChTm6Msg"/>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-desktop py-stack-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-forest-olive">Analytics Dashboard</h1>
+<p class="text-on-surface-variant text-body-md">Ancient wisdom tracked with modern precision.</p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-6 py-2.5 bg-off-white border border-sand text-forest-olive rounded-lg font-label-md text-label-md hover:bg-soft-beige transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                    Last 30 Days
+                </button>
+<button class="flex items-center gap-2 px-6 py-2.5 bg-forest-olive text-off-white rounded-lg font-label-md text-label-md hover:opacity-90 shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">file_download</span>
+                    Export Report
+                </button>
+</div>
+</div>
+<!-- Metric Cards Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-10">
+<!-- Total Consultations -->
+<div class="bg-soft-beige p-6 rounded-xl border border-[#E5DDCB] shadow-sm hover:translate-y-[-2px] transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">stethoscope</span>
+</div>
+<span class="text-success flex items-center font-label-md text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        12.5%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md mb-1">Total Consultations</p>
+<h3 class="text-forest-olive font-headline-md text-headline-md">1,284</h3>
+</div>
+<!-- Revenue -->
+<div class="bg-soft-beige p-6 rounded-xl border border-[#E5DDCB] shadow-sm hover:translate-y-[-2px] transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary">payments</span>
+</div>
+<span class="text-success flex items-center font-label-md text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        8.2%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md mb-1">Total Revenue</p>
+<h3 class="text-forest-olive font-headline-md text-headline-md">₹ 482,000</h3>
+</div>
+<!-- Active Doctors -->
+<div class="bg-soft-beige p-6 rounded-xl border border-[#E5DDCB] shadow-sm hover:translate-y-[-2px] transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-forest-olive/10 rounded-lg">
+<span class="material-symbols-outlined text-forest-olive">medication</span>
+</div>
+<span class="text-on-surface-variant flex items-center font-label-md text-label-sm">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+                        0%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md mb-1">Active Doctors</p>
+<h3 class="text-forest-olive font-headline-md text-headline-md">42</h3>
+</div>
+<!-- Patient Satisfaction -->
+<div class="bg-soft-beige p-6 rounded-xl border border-[#E5DDCB] shadow-sm hover:translate-y-[-2px] transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-warning/10 rounded-lg">
+<span class="material-symbols-outlined text-warning" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-success flex items-center font-label-md text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        4.1%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md mb-1">Satisfaction Rate</p>
+<h3 class="text-forest-olive font-headline-md text-headline-md">4.9/5.0</h3>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Revenue Trend Line Graph -->
+<div class="lg:col-span-2 bg-off-white p-8 rounded-xl border border-[#E5DDCB] shadow-sm">
+<div class="flex justify-between items-center mb-8">
+<h4 class="text-forest-olive font-title-lg text-title-lg">Revenue Trends</h4>
+<div class="flex gap-2">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-forest-olive"></span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Consultations</span>
+</div>
+<div class="flex items-center gap-2 ml-4">
+<span class="w-3 h-3 rounded-full bg-sand"></span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Prescriptions</span>
+</div>
+</div>
+</div>
+<div class="relative h-64 w-full flex items-end justify-between gap-2 px-2">
+<!-- Fake Line Graph Visual -->
+<div class="absolute inset-0 flex flex-col justify-between py-2 border-l border-b border-sand/30">
+<div class="w-full border-t border-sand/10"></div>
+<div class="w-full border-t border-sand/10"></div>
+<div class="w-full border-t border-sand/10"></div>
+<div class="w-full border-t border-sand/10"></div>
+</div>
+<!-- Line Simulation (SVG for quality) -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none">
+<defs>
+<lineargradient id="lineGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:rgba(63, 77, 43, 0.2); stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:rgba(63, 77, 43, 0); stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<path class="transition-all duration-1000" d="M0,180 Q100,120 200,150 T400,80 T600,100 T800,40" fill="none" stroke="#3F4D2B" stroke-width="3"></path>
+<path d="M0,180 Q100,120 200,150 T400,80 T600,100 T800,40 V256 H0 Z" fill="url(#lineGrad)"></path>
+</svg>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-[-32px] w-full flex justify-between px-2 text-label-sm font-label-sm text-on-surface-variant">
+<span>WK 1</span><span>WK 2</span><span>WK 3</span><span>WK 4</span><span>WK 5</span>
+</div>
+</div>
+</div>
+<!-- Doctor Utilization Bar Chart -->
+<div class="bg-off-white p-8 rounded-xl border border-[#E5DDCB] shadow-sm">
+<h4 class="text-forest-olive font-title-lg text-title-lg mb-8">Doctor Utilization</h4>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface">Dr. Ananya Sharma</span>
+<span class="text-forest-olive">92%</span>
+</div>
+<div class="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
+<div class="bg-forest-olive h-full rounded-full transition-all duration-1000" style="width: 92%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface">Dr. Rahul Varma</span>
+<span class="text-forest-olive">84%</span>
+</div>
+<div class="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
+<div class="bg-forest-olive h-full rounded-full transition-all duration-1000" style="width: 84%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface">Dr. Priya Nair</span>
+<span class="text-forest-olive">76%</span>
+</div>
+<div class="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
+<div class="bg-forest-olive h-full rounded-full transition-all duration-1000" style="width: 76%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface">Dr. Vikram Singh</span>
+<span class="text-forest-olive">68%</span>
+</div>
+<div class="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
+<div class="bg-sand h-full rounded-full transition-all duration-1000" style="width: 68%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface">Dr. Meera Iyer</span>
+<span class="text-forest-olive">45%</span>
+</div>
+<div class="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
+<div class="bg-sand h-full rounded-full transition-all duration-1000" style="width: 45%;"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 text-center text-label-md font-label-md text-forest-olive hover:underline">View All Staff</button>
+</div>
+</div>
+<!-- Recent Activity Table -->
+<div class="mt-10 bg-off-white rounded-xl border border-[#E5DDCB] shadow-sm overflow-hidden">
+<div class="px-8 py-6 border-b border-[#E5DDCB] flex justify-between items-center">
+<h4 class="text-forest-olive font-title-lg text-title-lg">Recent Consultations</h4>
+<button class="text-label-md font-label-md text-forest-olive flex items-center gap-1 hover:opacity-80">
+                    See All <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-soft-beige/30">
+<th class="px-8 py-4 font-label-md text-label-md text-on-surface-variant">Patient</th>
+<th class="px-8 py-4 font-label-md text-label-md text-on-surface-variant">Doctor</th>
+<th class="px-8 py-4 font-label-md text-label-md text-on-surface-variant">Specialization</th>
+<th class="px-8 py-4 font-label-md text-label-md text-on-surface-variant">Status</th>
+<th class="px-8 py-4 font-label-md text-label-md text-on-surface-variant">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-soft-beige">
+<tr class="hover:bg-soft-beige/20 transition-colors">
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-sand/20 flex items-center justify-center text-forest-olive font-bold text-xs">AS</div>
+<span class="font-medium text-on-surface">Arjun Sharma</span>
+</div>
+</td>
+<td class="px-8 py-4 text-on-surface-variant">Dr. Priya Nair</td>
+<td class="px-8 py-4 text-on-surface-variant">Panchakarma</td>
+<td class="px-8 py-4">
+<span class="px-3 py-1 bg-success/10 text-success rounded-full text-label-sm font-label-sm">Completed</span>
+</td>
+<td class="px-8 py-4 font-label-sm text-label-sm text-on-surface">₹ 1,500</td>
+</tr>
+<tr class="hover:bg-soft-beige/20 transition-colors">
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-sand/20 flex items-center justify-center text-forest-olive font-bold text-xs">MK</div>
+<span class="font-medium text-on-surface">Maya Kapoor</span>
+</div>
+</td>
+<td class="px-8 py-4 text-on-surface-variant">Dr. Ananya Sharma</td>
+<td class="px-8 py-4 text-on-surface-variant">Dietetics</td>
+<td class="px-8 py-4">
+<span class="px-3 py-1 bg-warning/10 text-warning rounded-full text-label-sm font-label-sm">Pending</span>
+</td>
+<td class="px-8 py-4 font-label-sm text-label-sm text-on-surface">₹ 1,200</td>
+</tr>
+<tr class="hover:bg-soft-beige/20 transition-colors">
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-sand/20 flex items-center justify-center text-forest-olive font-bold text-xs">RV</div>
+<span class="font-medium text-on-surface">Rohan Verma</span>
+</div>
+</td>
+<td class="px-8 py-4 text-on-surface-variant">Dr. Rahul Varma</td>
+<td class="px-8 py-4 text-on-surface-variant">Dravyaguna</td>
+<td class="px-8 py-4">
+<span class="px-3 py-1 bg-success/10 text-success rounded-full text-label-sm font-label-sm">Completed</span>
+</td>
+<td class="px-8 py-4 font-label-sm text-label-sm text-on-surface">₹ 1,800</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface-container-low border-t border-soft-beige mt-stack-lg">
+<div class="w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto">
+<div class="mb-6 md:mb-0">
+<span class="text-headline-md font-headline-md text-forest-olive block mb-2">Amrutam</span>
+<p class="text-on-surface-variant font-body-md text-body-md max-w-xs">Ancient Wisdom, Clinical Precision. Telemedicine platform for holistic healing.</p>
+</div>
+<div class="flex flex-col items-center md:items-end gap-4">
+<div class="flex gap-8">
+<a class="text-on-surface-variant hover:text-primary underline transition-all font-label-sm text-label-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary underline transition-all font-label-sm text-label-sm" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary underline transition-all font-label-sm text-label-sm" href="#">Help Center</a>
+</div>
+<p class="text-on-surface-variant font-label-sm text-label-sm opacity-60">© 2026 Amrutam Telemedicine by M Harish Gautham. Ancient Wisdom, Clinical Precision.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Simulating loading animation for charts
+        window.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.bg-forest-olive, .bg-sand');
+            bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
+            });
+        });
+    </script>
+</body></html>
