@@ -1,0 +1,14 @@
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment
+.env
+
+# Dependencies
+node_modules/
