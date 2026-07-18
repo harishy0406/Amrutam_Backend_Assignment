@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-dim: #d7dcc9;
+  --color-primary-fixed-dim: #bbce8f;
+  --color-surface-tint: #546431;
+  --color-outline: #76786b;
+  --color-on-secondary-fixed-variant: #59440d;
+  --color-on-error-container: #93000a;
+  --color-on-surface-variant: #45483d;
+  --color-surface-container-highest: #e0e5d1;
+  --color-surface-variant: #e0e5d1;
+  --color-on-tertiary-fixed-variant: #3b4d12;
+  --color-primary-fixed: #d6eaa9;
+  --color-error: #D9534F;
+  --color-forest-olive: #3F4D2B;
+  --color-on-tertiary-fixed: #141f00;
+  --color-on-secondary-fixed: #251a00;
+  --color-error-container: #ffdad6;
+  --color-sand: #D8C7A0;
+  --color-on-background: #181d11;
+  --color-background: #f7fce8;
+  --color-surface-container: #ebf0dd;
+  --color-warning: #E8B44B;
+  --color-on-error: #ffffff;
+  --color-outline-variant: #c6c8b9;
+  --color-on-primary-container: #ddf1b0;
+  --color-on-surface: #181d11;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-fixed: #d4eca0;
+  --color-tertiary: #45571c;
+  --color-inverse-primary: #bbce8f;
+  --color-on-primary-fixed-variant: #3c4c1b;
+  --color-secondary-container: #fcdc97;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #775f27;
+  --color-secondary-fixed-dim: #e2c380;
+  --color-surface-container-low: #f1f6e2;
+  --color-primary: #465624;
+  --color-inverse-on-surface: #eef3df;
+  --color-info: #5A8FBF;
+  --color-off-white: #FFFDF8;
+  --color-tertiary-container: #5c7032;
+  --color-warm-cream: #F8F4EC;
+  --color-surface: #f7fce8;
+  --color-earth-brown: #8B6A43;
+  --color-surface-bright: #f7fce8;
+  --color-secondary-fixed: #ffdf9a;
+  --color-on-primary: #ffffff;
+  --color-surface-container-high: #e6ead7;
+  --color-soft-beige: #F3EEDF;
+  --color-on-tertiary-container: #dbf3a6;
+  --color-inverse-surface: #2d3225;
+  --color-primary-container: #5e6f3a;
+  --color-on-primary-fixed: #141f00;
+  --color-secondary: #725b23;
+  --color-tertiary-fixed-dim: #b8cf86;
+  --color-surface-container-lowest: #ffffff;
+  --color-success: #4CAF50;
+
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  --spacing-stack-lg: 32px;
+  --spacing-stack-md: 16px;
+  --spacing-stack-sm: 8px;
+  --spacing-margin-mobile: 20px;
+  --spacing-margin-desktop: 64px;
+  --spacing-gutter: 24px;
+  --spacing-container-max: 1280px;
+  --spacing-unit: 8px;
+
+  --font-label-sm: 'JetBrains Mono', monospace;
+  --font-headline-lg: 'Manrope', sans-serif;
+  --font-headline-lg-mobile: 'Manrope', sans-serif;
+  --font-display-lg: 'Manrope', sans-serif;
+  --font-headline-md: 'Manrope', sans-serif;
+  --font-body-md: 'Work Sans', sans-serif;
+  --font-body-lg: 'Work Sans', sans-serif;
+  --font-label-md: 'JetBrains Mono', monospace;
+  --font-title-lg: 'Work Sans', sans-serif;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--letter-spacing: 0.05em;
+  --text-label-sm--font-weight: 500;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--letter-spacing: -0.01em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-lg-mobile: 24px;
+  --text-headline-lg-mobile--line-height: 32px;
+  --text-headline-lg-mobile--font-weight: 600;
+
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 56px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--font-weight: 600;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-label-md: 14px;
+  --text-label-md--line-height: 20px;
+  --text-label-md--letter-spacing: 0.02em;
+  --text-label-md--font-weight: 500;
+
+  --text-title-lg: 20px;
+  --text-title-lg--line-height: 28px;
+  --text-title-lg--font-weight: 600;
+}
+
+@utility material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+@utility custom-shadow {
+  box-shadow: 0 4px 20px rgba(63, 77, 43, 0.08);
+}
+
+@utility bg-texture {
+  background-image: radial-gradient(circle at 2px 2px, #e5ddcb 1px, transparent 0);
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
