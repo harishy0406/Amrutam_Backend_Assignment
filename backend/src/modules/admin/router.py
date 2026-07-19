@@ -40,7 +40,7 @@ def require_admin(current_user = Depends(get_current_user)):
     return current_user
 
 # --- ROUTES ---
-@router.get("/analytics/consultations")
+@router.get("/analytics/consultations", summary="Consultations Analytics", description="Admins can view aggregated statistics about recent consultations.")
 async def daily_consultations(
     days: int = 7,
     db: AsyncSession = Depends(get_db),
@@ -49,7 +49,7 @@ async def daily_consultations(
     service = AdminService(db)
     return await service.get_daily_consultations(days)
 
-@router.get("/analytics/revenue")
+@router.get("/analytics/revenue", summary="Revenue Analytics", description="Admins can view aggregated revenue statistics.")
 async def revenue_summary(
     db: AsyncSession = Depends(get_db),
     _: dict = Depends(require_admin)
@@ -57,7 +57,7 @@ async def revenue_summary(
     service = AdminService(db)
     return await service.get_revenue_summary()
 
-@router.get("/analytics/doctors")
+@router.get("/analytics/doctors", summary="Doctor Analytics", description="Admins can view performance and rating statistics for doctors.")
 async def doctor_utilization(
     limit: int = 5,
     db: AsyncSession = Depends(get_db),

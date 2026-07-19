@@ -5,7 +5,7 @@ from src.modules.doctors.service import DoctorService
 
 router = APIRouter(prefix="/doctors", tags=["Public Search"])
 
-@router.get("/search")
+@router.get("/search", summary="Search Doctors", description="Search for doctors by name, specialization, or minimum rating.")
 async def search_doctors(
     q: str = Query(None, description="Search by Doctor Name"),
     spec: str = Query(None, description="Filter by Specialization"),

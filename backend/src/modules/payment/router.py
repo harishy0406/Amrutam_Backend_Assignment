@@ -15,7 +15,7 @@ class WebhookPayload(BaseModel):
     transaction_id: str
     status: str # "SUCCESS" or "FAILED"
 
-@router.post("/initiate")
+@router.post("/initiate", summary="Initiate Payment", description="Create a Razorpay order for a booking. Required before confirming booking.")
 async def initiate_payment(data: PaymentInitiate, db: AsyncSession = Depends(get_db)):
     service = PaymentService(db)
     payment = await service.create_payment_intent(data.booking_id, data.amount)
@@ -23,7 +23,7 @@ async def initiate_payment(data: PaymentInitiate, db: AsyncSession = Depends(get
         raise HTTPException(status_code=404, detail="Booking not found")
     return {"payment_id": payment.id, "transaction_id": payment.transaction_id, "status": "PENDING"}
 
-@router.post("/webhook")
+@router.post("/webhook", summary="Payment Webhook", description="Razorpay calls this endpoint securely to confirm successful payment.")
 async def payment_webhook(
     payload: WebhookPayload, 
     x_signature: str = Header(None), # The Bank sends this header

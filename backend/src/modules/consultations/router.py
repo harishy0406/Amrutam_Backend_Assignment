@@ -49,7 +49,7 @@ class PrescriptionCreate(BaseModel):
     medications: str
 
 # --- 3. THE ENDPOINTS ---
-@router.post("/prescriptions")
+@router.post("/prescriptions", summary="Create Prescription", description="Doctors can create a prescription for a specific booking.")
 async def create_prescription(
     data: PrescriptionCreate,
     db: AsyncSession = Depends(get_db),
@@ -66,7 +66,7 @@ async def create_prescription(
         data.medications
     )
 
-@router.get("/prescriptions/{booking_id}")
+@router.get("/prescriptions/{booking_id}", summary="Get Prescription", description="Fetch the prescription details for a specific booking.")
 async def get_prescription(
     booking_id: str,
     db: AsyncSession = Depends(get_db),

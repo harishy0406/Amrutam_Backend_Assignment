@@ -23,20 +23,20 @@ def get_service(db: AsyncSession = Depends(get_db)) -> AuthService:
     repository = AuthRepository(db)
     return AuthService(repository)
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED, summary="Register new user", description="Creates a new patient or doctor account in the system.")
 async def register(user_data: UserCreate, service: AuthService = Depends(get_service)):
     return await service.register_user(user_data)
 
 # --- UPDATED: Temporarily removed Rate Limiter to fix 500 error ---
-@router.post("/login", response_model=TokenResponse)
+@router.post("/login", response_model=TokenResponse, summary="Login", description="Authenticate with email and password to receive a JWT access token.")
 async def login(login_data: UserLogin, service: AuthService = Depends(get_service)):
     return await service.login_user(login_data)
 
-@router.post("/refresh", response_model=TokenResponse)
+@router.post("/refresh", response_model=TokenResponse, summary="Refresh Token", description="Get a new access token using a valid refresh token.")
 async def refresh_token(refresh_token: str, service: AuthService = Depends(get_service)):
     return await service.rotate_tokens(refresh_token)
 
-@router.post("/logout")
+@router.post("/logout", summary="Logout", description="Invalidate the current access token.")
 async def logout(
     current_user = Depends(get_current_user),
     service: AuthService = Depends(get_service)
@@ -44,16 +44,16 @@ async def logout(
     await service.logout_user(current_user.id)
     return {"message": "Logged out successfully"}
 
-@router.get("/test/patient", dependencies=[Depends(require_role("patient"))])
+@router.get("/test/patient", dependencies=[Depends(require_role("patient"))], summary="Patient Test", description="Test endpoint restricted to patient role.")
 def patient_only(): return {"msg": "Hello Patient!"}
 
-@router.get("/test/doctor", dependencies=[Depends(require_role("doctor"))])
+@router.get("/test/doctor", dependencies=[Depends(require_role("doctor"))], summary="Doctor Test", description="Test endpoint restricted to doctor role.")
 def doctor_only(): return {"msg": "Hello Doctor!"}
 
-@router.get("/test/admin", dependencies=[Depends(require_role("admin"))])
+@router.get("/test/admin", dependencies=[Depends(require_role("admin"))], summary="Admin Test", description="Test endpoint restricted to admin role.")
 def admin_only(): return {"msg": "Hello Admin!"}
 
-@router.get("/profile", response_model=ProfileResponse)
+@router.get("/profile", response_model=ProfileResponse, summary="Get Profile", description="Retrieve the logged-in user's full profile details.")
 async def get_profile(
     current_user = Depends(get_current_user),
     service: AuthService = Depends(get_service)
@@ -71,7 +71,7 @@ async def get_profile(
         "specialization": user.doctor_profile.specialization if user.doctor_profile else None
     }
 
-@router.put("/profile", response_model=ProfileResponse)
+@router.put("/profile", response_model=ProfileResponse, summary="Update Profile", description="Update the logged-in user's profile details.")
 async def update_profile(
     data: ProfileUpdate,
     current_user = Depends(get_current_user),

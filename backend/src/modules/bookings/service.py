@@ -12,9 +12,6 @@ class BookingService:
         if existing_key and existing_key.response_json:
             return existing_key.response_json 
 
-    async def get_bookings_by_doctor(self, doctor_id: str):
-        return await self.repository.get_bookings_by_doctor(doctor_id)
-
         # 2. Register key
         if not existing_key:
             await self.repository.create_idempotency_key(idempotency_key)
@@ -68,3 +65,6 @@ class BookingService:
         except Exception as e:
             await self.db.rollback() 
             raise e
+
+    async def get_bookings_by_doctor(self, doctor_id: str):
+        return await self.repository.get_bookings_by_doctor(doctor_id)
