@@ -3,7 +3,16 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
+import { useRouter } from 'next/navigation';
+
 export default function BookingStatus() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/');
+  };
+
   return (
     <>
       <div>
@@ -22,6 +31,7 @@ export default function BookingStatus() {
       <div className="flex items-center gap-4">
         <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all">notifications</span>
         <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all">settings</span>
+        <button onClick={handleLogout} title="Logout" className="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all active:scale-95">logout</button>
         <button className="bg-forest-olive text-off-white px-6 py-2 rounded-lg text-label-md font-label-md active:scale-95 transition-transform">
           Profile
         </button>

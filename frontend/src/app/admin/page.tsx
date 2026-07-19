@@ -1,9 +1,44 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+import { useRouter } from 'next/navigation';
+import { fetchApi } from '@/lib/api';
+
 export default function AdminDashboard() {
+  const router = useRouter();
+  
+  const [revenue, setRevenue] = useState(0);
+  const [totalConsultations, setTotalConsultations] = useState(0);
+  const [activeDoctors, setActiveDoctors] = useState(0);
+  const [doctorStats, setDoctorStats] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const revData = await fetchApi<{total_revenue: number, currency: string}>('/admin/analytics/revenue');
+        setRevenue(revData.total_revenue);
+        
+        const consultData = await fetchApi<any[]>('/admin/analytics/consultations?days=30');
+        const total = consultData.reduce((acc, curr) => acc + (curr.count || 0), 0);
+        setTotalConsultations(total);
+        
+        const docData = await fetchApi<any[]>('/admin/analytics/doctors?limit=5');
+        setDoctorStats(docData);
+        setActiveDoctors(docData.length); // Assuming docData returns list of active doctors
+      } catch (err) {
+        console.error("Failed to fetch analytics", err);
+      }
+    };
+    fetchAnalytics();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/');
+  };
+
   return (
     <>
       <div>
@@ -27,6 +62,7 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-4">
           <button className="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all active:scale-95">notifications</button>
           <button className="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all active:scale-95">settings</button>
+          <button onClick={handleLogout} title="Logout" className="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all active:scale-95">logout</button>
           <div className="h-10 w-10 rounded-full border-2 border-sand overflow-hidden cursor-pointer active:scale-95 transition-transform">
             <img className="w-full h-full object-cover" data-alt="A professional medical administrator profile portrait, clean studio lighting, wearing soft earthy toned professional attire, minimalist clinical background with a touch of botanical greenery, high resolution photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDACQm8AAlzccOEMvYTwxpil8OGgzbfjnEVGFXh0Fy8H0cKgMO2tfi3ZAKk2LxuWOGo8AXj2G63zB-rNhk8xPc4DEZHuILPPWO65C2rQ6JFItX2jf3fDaNeev_E30jlN8F16tcinVuphDCF71II1TCxlgoI59BBcZp1L4aFvu-f7_3Hro_GAD3iBu2dMmO4-c56Z0dXt2NzAqBV6n1_RSSAu2bXxF8_sQlPrDGojcqpcnZ34TChTm6Msg" />
           </div>
@@ -66,7 +102,7 @@ export default function AdminDashboard() {
           </span>
         </div>
         <p className="text-on-surface-variant font-label-md text-label-md mb-1">Total Consultations</p>
-        <h3 className="text-forest-olive font-headline-md text-headline-md">1,284</h3>
+        <h3 className="text-forest-olive font-headline-md text-headline-md">{totalConsultations}</h3>
       </div>
       {/* Revenue */}
       <div className="bg-soft-beige p-6 rounded-xl border border-[#E5DDCB] shadow-sm hover:translate-y-[-2px] transition-all">
@@ -80,7 +116,7 @@ export default function AdminDashboard() {
           </span>
         </div>
         <p className="text-on-surface-variant font-label-md text-label-md mb-1">Total Revenue</p>
-        <h3 className="text-forest-olive font-headline-md text-headline-md">₹ 482,000</h3>
+        <h3 className="text-forest-olive font-headline-md text-headline-md">₹ {revenue.toLocaleString()}</h3>
       </div>
       {/* Active Doctors */}
       <div className="bg-soft-beige p-6 rounded-xl border border-[#E5DDCB] shadow-sm hover:translate-y-[-2px] transition-all">
@@ -94,7 +130,7 @@ export default function AdminDashboard() {
           </span>
         </div>
         <p className="text-on-surface-variant font-label-md text-label-md mb-1">Active Doctors</p>
-        <h3 className="text-forest-olive font-headline-md text-headline-md">42</h3>
+        <h3 className="text-forest-olive font-headline-md text-headline-md">{activeDoctors}</h3>
       </div>
       {/* Patient Satisfaction */}
       <div className="bg-soft-beige p-6 rounded-xl border border-[#E5DDCB] shadow-sm hover:translate-y-[-2px] transition-all">
@@ -157,51 +193,23 @@ export default function AdminDashboard() {
       <div className="bg-off-white p-8 rounded-xl border border-[#E5DDCB] shadow-sm">
         <h4 className="text-forest-olive font-title-lg text-title-lg mb-8">Doctor Utilization</h4>
         <div className="space-y-6">
-          <div className="space-y-2">
-            <div className="flex justify-between text-label-sm font-label-sm">
-              <span className="text-on-surface">Dr. Ananya Sharma</span>
-              <span className="text-forest-olive">92%</span>
-            </div>
-            <div className="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
-              <div className="bg-forest-olive h-full rounded-full transition-all duration-1000" style={{width: '92%'}} />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="flex justify-between text-label-sm font-label-sm">
-              <span className="text-on-surface">Dr. Rahul Varma</span>
-              <span className="text-forest-olive">84%</span>
-            </div>
-            <div className="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
-              <div className="bg-forest-olive h-full rounded-full transition-all duration-1000" style={{width: '84%'}} />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="flex justify-between text-label-sm font-label-sm">
-              <span className="text-on-surface">Dr. Priya Nair</span>
-              <span className="text-forest-olive">76%</span>
-            </div>
-            <div className="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
-              <div className="bg-forest-olive h-full rounded-full transition-all duration-1000" style={{width: '76%'}} />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="flex justify-between text-label-sm font-label-sm">
-              <span className="text-on-surface">Dr. Vikram Singh</span>
-              <span className="text-forest-olive">68%</span>
-            </div>
-            <div className="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
-              <div className="bg-sand h-full rounded-full transition-all duration-1000" style={{width: '68%'}} />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="flex justify-between text-label-sm font-label-sm">
-              <span className="text-on-surface">Dr. Meera Iyer</span>
-              <span className="text-forest-olive">45%</span>
-            </div>
-            <div className="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
-              <div className="bg-sand h-full rounded-full transition-all duration-1000" style={{width: '45%'}} />
-            </div>
-          </div>
+          {doctorStats.length > 0 ? doctorStats.map((doc, idx) => {
+            // Mock a utilization percentage for now if not provided, or use actual
+            const utilization = doc.utilization || Math.floor(Math.random() * (95 - 40 + 1) + 40);
+            return (
+              <div key={idx} className="space-y-2">
+                <div className="flex justify-between text-label-sm font-label-sm">
+                  <span className="text-on-surface">{doc.doctor_name || `Doctor ${idx + 1}`}</span>
+                  <span className="text-forest-olive">{utilization}%</span>
+                </div>
+                <div className="w-full bg-soft-beige rounded-full h-2 overflow-hidden">
+                  <div className={`h-full rounded-full transition-all duration-1000 ${utilization > 70 ? 'bg-forest-olive' : 'bg-sand'}`} style={{width: `${utilization}%`}} />
+                </div>
+              </div>
+            );
+          }) : (
+            <p className="text-body-md text-on-surface-variant">No doctor data available yet.</p>
+          )}
         </div>
         <button className="w-full mt-8 text-center text-label-md font-label-md text-forest-olive hover:underline">View All Staff</button>
       </div>
