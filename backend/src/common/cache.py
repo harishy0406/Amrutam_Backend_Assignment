@@ -2,12 +2,11 @@ import redis.asyncio as redis
 import json
 import os
 
-# Connect to the Redis Container (hostname: amrutam_redis)
-REDIS_URL = os.getenv("REDIS_URL", "redis://amrutam_redis:6379/0")
+from src.common.config import settings
 
 class CacheService:
     def __init__(self):
-        self.redis = redis.from_url(REDIS_URL, encoding="utf-8", decode_responses=True)
+        self.redis = redis.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
         # CONFIG: How long (in seconds) to keep search results?
         # 60 seconds is a good balance: Data isn't too stale, but DB is protected.
         self.TTL = 60 

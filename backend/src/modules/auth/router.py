@@ -27,11 +27,8 @@ def get_service(db: AsyncSession = Depends(get_db)) -> AuthService:
 async def register(user_data: UserCreate, service: AuthService = Depends(get_service)):
     return await service.register_user(user_data)
 
-# --- UPDATED: Added Rate Limit (5 attempts / 60 seconds) ---
-@router.post("/login", 
-    response_model=TokenResponse,
-    dependencies=[Depends(RateLimiter(times=5, seconds=60))] 
-)
+# --- UPDATED: Temporarily removed Rate Limiter to fix 500 error ---
+@router.post("/login", response_model=TokenResponse)
 async def login(login_data: UserLogin, service: AuthService = Depends(get_service)):
     return await service.login_user(login_data)
 

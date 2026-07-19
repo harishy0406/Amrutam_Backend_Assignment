@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     # 1. Database
     DATABASE_URL: str
+    REDIS_URL: str = "redis://localhost:6379/0"
     
     # 2. Environment (Dev/Prod) - THIS WAS MISSING
     ENVIRONMENT: str = "development"
