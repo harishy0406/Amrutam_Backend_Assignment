@@ -35,6 +35,14 @@ The platform supports distinct workflows for Patients, Doctors, and Administrato
 | Containerization | Docker, Docker Compose |
 | Migrations | Alembic |
 
+## 🏗️ Architecture
+A scalable, secure, and production-grade telemedicine platform architecture that integrates Next.js, FastAPI, PostgreSQL, Redis, and cloud-native observability to deliver reliable patient, doctor, and admin workflows.
+
+<p align="center">
+<!-- SCREENSHOT PLACEHOLDER: System architecture diagram -->
+<img width="936" height="524" alt="image" src="https://github.com/user-attachments/assets/0fab5837-935e-491c-998b-e788184f587c" />
+</p>
+
 ## 📂 Project Structure
 
 ```text
