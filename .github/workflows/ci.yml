@@ -60,6 +60,10 @@ jobs:
         working-directory: ./backend
         env:
           DATABASE_URL: postgresql+asyncpg://user:password@localhost:5432/telemedicine
+          REDIS_URL: redis://localhost:6379
+          SECRET_KEY: "supersecretkeyfortesting"
+          ALGORITHM: "HS256"
+          ACCESS_TOKEN_EXPIRE_MINUTES: 30
           PYTHONPATH: .
         run: |
           # 1. Ensure version folder exists
