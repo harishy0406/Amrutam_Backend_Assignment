@@ -7,16 +7,28 @@ export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): 
   // Ensure the endpoint starts with a slash
   const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
   
-  const defaultOptions: RequestInit = {
+  let token = null;
+  if (typeof window !== 'undefined') {
+    token = localStorage.getItem('token');
+  }
+
+  const finalOptions: RequestInit = {
+    ...options,
+    cache: options.cache || 'no-store', // Prevent Next.js from caching API responses by default
     headers: {
       'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
       ...options.headers,
     },
   };
 
-  const response = await fetch(`/api${path}`, { ...defaultOptions, ...options });
+  const response = await fetch(`/api${path}`, finalOptions);
 
   if (!response.ok) {
+    if (response.status === 401 && typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      window.location.href = '/';
+    }
     const errorBody = await response.text();
     throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorBody}`);
   }

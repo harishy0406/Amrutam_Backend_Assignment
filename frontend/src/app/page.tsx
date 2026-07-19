@@ -1,11 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { fetchApi } from "@/lib/api";
 
 export default function Login() {
+  const router = useRouter();
   const [role, setRole] = useState<"patient" | "doctor" | "admin">("patient");
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [mode, setMode] = useState<"login" | "register">("login");
+  const [fullName, setFullName] = useState("");
 
   const getIndicatorLeft = () => {
     switch (role) {
@@ -17,6 +27,44 @@ export default function Login() {
         return "calc(64% + 4px + 4%)";
       default:
         return "calc(0% + 4px + 0%)";
+    }
+  };
+
+  const handleAuth = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      if (mode === 'register') {
+        // 1. Register the user
+        await fetchApi("/auth/register", {
+          method: "POST",
+          body: JSON.stringify({ email, password, full_name: fullName, role }),
+        });
+      }
+
+      // 2. Login the user (works for both existing login and auto-login after register)
+      const data = await fetchApi<{ access_token: string }>("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+      
+      // Store token securely (localStorage for now)
+      localStorage.setItem("token", data.access_token);
+      
+      // Redirect based on selected role
+      if (role === "admin") {
+        router.push("/admin");
+      } else if (role === "doctor") {
+        router.push("/doctor"); // Updated doctor dashboard route
+      } else {
+        router.push("/find-doctor"); // Patient dashboard
+      }
+    } catch (err: any) {
+      setError(err.message || `Failed to ${mode}. Please check your inputs.`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,6 +88,24 @@ export default function Login() {
 
         {/* Login Card */}
         <div className="bg-soft-beige border border-sand/30 rounded-xl p-8 custom-shadow backdrop-blur-sm">
+          {/* Auth Mode Toggle */}
+          <div className="flex justify-center mb-6">
+            <div className="flex space-x-4">
+              <button 
+                onClick={() => setMode('login')} 
+                className={`text-label-md font-bold pb-1 ${mode === 'login' ? 'text-primary border-b-2 border-primary' : 'text-outline-variant hover:text-on-surface-variant'}`}
+              >
+                Sign In
+              </button>
+              <button 
+                onClick={() => setMode('register')} 
+                className={`text-label-md font-bold pb-1 ${mode === 'register' ? 'text-primary border-b-2 border-primary' : 'text-outline-variant hover:text-on-surface-variant'}`}
+              >
+                Sign Up
+              </button>
+            </div>
+          </div>
+
           {/* Role Selection Tabs */}
           <div className="flex items-center justify-between p-1 bg-surface-container-low rounded-lg mb-stack-lg relative overflow-hidden">
             <div
@@ -65,15 +131,47 @@ export default function Login() {
             <button
               className={`relative z-10 flex-1 py-2 font-label-md text-label-md transition-colors ${
                 role === "admin" ? "text-forest-olive" : "text-on-surface-variant"
-              }`}
-              onClick={() => setRole("admin")}
+              } ${mode === 'register' ? 'opacity-50 cursor-not-allowed' : ''}`}
+              onClick={() => { if (mode !== 'register') setRole("admin") }}
+              disabled={mode === 'register'}
             >
               Admin
             </button>
           </div>
 
-          {/* Login Form */}
-          <form className="space-y-stack-md" onSubmit={(e) => e.preventDefault()}>
+          {/* Login/Register Form */}
+          <form className="space-y-stack-md" onSubmit={handleAuth}>
+            {error && (
+              <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm border border-red-200">
+                {error}
+              </div>
+            )}
+            
+            {mode === 'register' && (
+              <div className="space-y-stack-sm">
+                <label
+                  className="block font-label-md text-label-md text-forest-olive ml-1"
+                  htmlFor="fullName"
+                >
+                  Full Name
+                </label>
+                <div className="relative group">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">
+                    person
+                  </span>
+                  <input
+                    className="w-full pl-10 pr-4 py-3 bg-white/50 border-b-2 border-transparent focus:border-primary border-sand/20 rounded-t-lg outline-none transition-all placeholder:text-outline-variant font-body-md text-body-md"
+                    id="fullName"
+                    placeholder="John Doe"
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required={mode === 'register'}
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="space-y-stack-sm">
               <label
                 className="block font-label-md text-label-md text-forest-olive ml-1"
@@ -90,6 +188,9 @@ export default function Login() {
                   id="email"
                   placeholder="name@example.com"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -101,12 +202,14 @@ export default function Login() {
                 >
                   Password
                 </label>
-                <Link
-                  className="text-label-sm font-label-sm text-secondary hover:text-primary transition-colors"
-                  href="#"
-                >
-                  Forgot?
-                </Link>
+                {mode === 'login' && (
+                  <Link
+                    className="text-label-sm font-label-sm text-secondary hover:text-primary transition-colors"
+                    href="#"
+                  >
+                    Forgot?
+                  </Link>
+                )}
               </div>
               <div className="relative group">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">
@@ -117,6 +220,10 @@ export default function Login() {
                   id="password"
                   placeholder="••••••••"
                   type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={8}
                 />
                 <button
                   className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-outline transition-colors"
@@ -127,30 +234,37 @@ export default function Login() {
                 </button>
               </div>
             </div>
-            <div className="flex items-center space-x-2 px-1 pt-1">
-              <input
-                className="w-4 h-4 rounded border-sand text-primary focus:ring-primary/20 bg-white/50"
-                id="remember"
-                type="checkbox"
-              />
-              <label
-                className="text-label-sm font-label-sm text-on-surface-variant cursor-pointer"
-                htmlFor="remember"
-              >
-                Remember me on this device
-              </label>
-            </div>
-            <Link href={role === "admin" ? "/admin" : role === "doctor" ? "/booking-status" : "/find-doctor"} className="block">
+            
+            {mode === 'login' && (
+              <div className="flex items-center space-x-2 px-1 pt-1">
+                <input
+                  className="w-4 h-4 rounded border-sand text-primary focus:ring-primary/20 bg-white/50"
+                  id="remember"
+                  type="checkbox"
+                />
+                <label
+                  className="text-label-sm font-label-sm text-on-surface-variant cursor-pointer"
+                  htmlFor="remember"
+                >
+                  Remember me on this device
+                </label>
+              </div>
+            )}
+
+            <div className="block">
               <button
-                className="w-full bg-forest-olive hover:bg-primary text-off-white font-label-md text-label-md py-4 rounded-lg shadow-lg hover:shadow-primary/20 transition-all duration-300 active:scale-[0.98] mt-stack-md flex items-center justify-center space-x-2"
-                type="button"
+                className="w-full bg-forest-olive hover:bg-primary text-off-white font-label-md text-label-md py-4 rounded-lg shadow-lg hover:shadow-primary/20 transition-all duration-300 active:scale-[0.98] mt-stack-md flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                type="submit"
+                disabled={isLoading}
               >
-                <span>Sign In to Dashboard</span>
-                <span className="material-symbols-outlined text-[18px]">
-                  arrow_forward
-                </span>
+                <span>{isLoading ? (mode === 'login' ? "Signing In..." : "Signing Up...") : (mode === 'login' ? "Sign In to Dashboard" : "Create Account")}</span>
+                {!isLoading && (
+                  <span className="material-symbols-outlined text-[18px]">
+                    arrow_forward
+                  </span>
+                )}
               </button>
-            </Link>
+            </div>
           </form>
 
           <div className="mt-stack-lg pt-stack-lg border-t border-sand/20 text-center">
