@@ -100,6 +100,13 @@ npm run dev
 ```
 Frontend available at: `http://localhost:3000`
 
+## 📊 ER Diagram
+
+<p align="center">
+<!-- SCREENSHOT PLACEHOLDER: System architecture diagram -->
+<img width="935" height="624" alt="image" src="https://github.com/user-attachments/assets/57ec80bf-2588-4f79-b207-681646b77767" />
+</p>
+
 ## 🤝 Contributing
 
 Contributions are welcome. Please keep changes focused and document any schema or configuration changes.
