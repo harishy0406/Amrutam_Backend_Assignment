@@ -63,7 +63,7 @@ jobs:
           REDIS_URL: redis://localhost:6379
           SECRET_KEY: "supersecretkeyfortesting"
           ALGORITHM: "HS256"
-          ACCESS_TOKEN_EXPIRE_MINUTES: 30
+          ACCESS_TOKEN_EXPIRE_MINUTES: "30"
           PYTHONPATH: .
         run: |
           # 1. Ensure version folder exists
@@ -107,6 +107,6 @@ jobs:
           REDIS_URL: redis://localhost:6379
           SECRET_KEY: "supersecretkeyfortesting"
           ALGORITHM: "HS256"
-          ACCESS_TOKEN_EXPIRE_MINUTES: 30
+          ACCESS_TOKEN_EXPIRE_MINUTES: "30"
           PYTHONPATH: . 
         run: pytest -v tests/test_flows.py
