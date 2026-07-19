@@ -45,6 +45,11 @@ class BookingRepository:
         await self.db.flush()
         return booking
 
+    async def get_bookings_by_doctor(self, doctor_id: str):
+        query = select(Booking).where(Booking.doctor_id == doctor_id).order_by(Booking.created_at.desc())
+        result = await self.db.execute(query)
+        return result.scalars().all()
+
     # --- ADD THIS METHOD COMPLETELY ---
     async def log_action(self, performed_by: str, action: str, target_id: str, details: str):
         log = AuditLog(

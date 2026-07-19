@@ -29,3 +29,11 @@ async def get_my_slots(
 ):
     """Doctor sees their own schedule."""
     return await service.list_slots(current_user.id)
+
+@router.get("/doctors/{doctor_id}/slots", response_model=List[SlotResponse])
+async def get_doctor_slots(
+    doctor_id: str,
+    service: AvailabilityService = Depends(get_service)
+):
+    """Patient sees a doctor's schedule."""
+    return await service.list_slots(doctor_id)
